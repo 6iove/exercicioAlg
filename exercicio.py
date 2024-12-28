@@ -69,3 +69,20 @@ def gerar_matricula_do_professor():
 
 print(cadastro_de_professores())
 
+disciplinas_cadastradas = []
+
+def cadastro_de_disciplinas():
+    nome_da_disciplina = input("Disciplina: ")
+    carga_horaria = int(input("Carga horária: "))
+    professor_da_disciplina = input("Discente: ")
+    
+    disciplina = {
+        "Disciplina": nome_da_disciplina, 
+        "Carga horária": carga_horaria,
+        "Discente": professor_da_disciplina
+    }
+    
+    disciplinas_cadastradas.append(disciplina)
+    return disciplinas_cadastradas
+
+print(cadastro_de_disciplinas())
