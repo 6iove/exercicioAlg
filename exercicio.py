@@ -55,10 +55,17 @@ def cadastro_de_professores():
         "Endereço": endereco, 
         "Telefone": telefone, 
         "E-mail": email, 
-        "Disciplina": disciplina
+        "Disciplina": disciplina, 
+        "Matrícula": gerar_matricula_do_professor()
     }
     
     professores_cadastrados.append(professores)
     return professores_cadastrados
 
+def gerar_matricula_do_professor():
+    numero_matricula_professor = ''.join(random.choices(string.digits, k = 5))
+    letra_matricula_professor = random.choice(string.ascii_uppercase)
+    return f"{numero_matricula_professor}.{letra_matricula_professor}"
+
 print(cadastro_de_professores())
+
