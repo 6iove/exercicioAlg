@@ -25,18 +25,51 @@ def cadastro_de_alunos():
         }
     
         alunos_cadastrados.append(aluno)
+        print(f"\nAluno {nome} cadastrado!")
+        print (f"\n{nome}, {aluno['Matrícula']}")
         
         cadastrar_outro_aluno = input("Deseja cadastrar outro aluno? (s/n): ")
         if cadastrar_outro_aluno.lower() != "s": 
             break
         
     return alunos_cadastrados
+    
 
 def gerar_numero_de_matricula():
     numero_matricula = ''.join(random.choices(string.digits, k = 6))
     letra_matricula = random.choice(string.ascii_uppercase)
     return f"{numero_matricula}-{letra_matricula}"
-   
+
+def matricular_aluno_em_turma():
+    matricula_do_aluno = input("Digite a matrícula do aluno: ") # mais de um aluno pode ter o mesmo nome completo
+    aluno_encontrado = None # cria variável vazia
+    
+    # percorre array alunos_cadastrados 
+    for aluno in alunos_cadastrados:
+    # procura o aluno a partir do número de matrícula armazenado percorrendo o dicionário 'aluno'
+        if aluno["Matrícula"] == matricula_do_aluno:
+        # variável, antes vazia, recebe as informações do aluno contidas no dicionário
+            aluno_encontrado = aluno
+            break
+        
+    if aluno_encontrado:
+        print(f"Aluno: {aluno_encontrado['Nome']}")
+        nome_da_turma = input("Em qual turma o aluno será matrículado? ")
+        turma_encontrada = None
+        
+        for turma in turmas_cadastradas:
+            if turma["Nome da turma"].lower() == nome_da_turma.lower():
+                turma_encontrada = turma
+                break
+        
+        if turma_encontrada:
+            turma_encontrada["Alunos"].append(aluno_encontrado)
+            print(f"\nO aluno {aluno_encontrado['Nome']} foi matriculado com sucesso na turma {nome_da_turma}.")
+        else:
+            print(f"\nNão foi possível encontrar a turma informada. Tente novamente.")
+    else:
+        print(f"\nNão foi possível encontrar nenhum aluno correspondente ao número de matrícula informado. Tente novamente.")
+    
 
 professores_cadastrados = []
 
@@ -77,6 +110,19 @@ def gerar_matricula_do_professor():
     letra_matricula_professor = random.choice(string.ascii_uppercase)
     return f"{numero_matricula_professor}.{letra_matricula_professor}"
 
+# filtragem de professores por disciplina
+def filtrar_professores_por_disciplina(disciplina):
+    professores_encontrados = []
+    
+    for professor in professores_cadastrados:
+        #acessa a chave 'disciplina' no dicionário
+        if professor["Disciplina"].lower() == disciplina.lower():
+            professores_encontrados.append(professor)
+    
+    if professores_encontrados: 
+        print(f"Professor: {professor['Nome']}, Matrícula: {professor['Matrícula']}, Disciplina: {professor['Disciplina']}")
+    else:
+        print(f"Nenhum professor foi cadastrado para a disciplina {disciplina}.")
 
 disciplinas_cadastradas = []
 
@@ -126,7 +172,7 @@ def cadastro_de_turmas():
             "Nome da turma": nome_turma,
             "Disciplinas": disciplinas_da_turma,
             "Professores": professor_da_turma,
-            "Alunos": alunos_da_turma,
+            "Alunos": [],
             "Código": gerar_código_turma()
         }
     
@@ -143,25 +189,10 @@ def gerar_código_turma():
     letra_codigo_turma = random.choice(string.ascii_uppercase)
     return f"{letra_codigo_turma}{numero_codigo_turma}" 
 
-
-# filtragem de professores por disciplina
-def filtrar_professores_por_disciplina(disciplina):
-    professores_encontrados = []
-    
-    for professor in professores_cadastrados:
-        #acessa a chave disciplina no dicionário
-        if professor["Disciplina"].lower() == disciplina.lower():
-            professores_encontrados.append(professor)
-    
-    if professores_encontrados: 
-        print(f"Professor: {professor['Nome']}, Matrícula: {professor['Matrícula']}, Disciplina: {professor['Disciplina']}")
-    else:
-        print(f"Nenhum professor foi cadastrado para a disciplina {disciplina}.")
-    
 #página inicial
 def pagina_inicial(): 
     while True:   
-        print ("*** HOMEPAGE ***")
+        print ("\n*** HOMEPAGE ***")
 
         print("\n*** OPÇÕES DE CADASTROS ***")
 
@@ -170,9 +201,10 @@ def pagina_inicial():
         print("3. Disciplinas")
         print("4. Turmas")
         print("5. Opções de filtragem")
-        print("6. Sair")
+        print("6. Matrícula de alunos em turmas")
+        print("Sair")
 
-        opcao_cadastro = input("Escolha uma opção: ")
+        opcao_cadastro = input("Escolha uma opção (1-6): ")
 
         if opcao_cadastro == "1":
             cadastro_de_alunos()
@@ -194,8 +226,7 @@ def pagina_inicial():
             else:
                 print("Opção inválida.")
         elif opcao_cadastro == "6":
-            print("Fechando programa.")
-            break
+            matricular_aluno_em_turma()
         else:
             print("Opção inválida. Digite 1, 2, 3, 4, ou 5.")
             
