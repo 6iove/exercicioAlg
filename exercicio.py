@@ -147,3 +147,15 @@ def gerar_código_turma():
     return f"{letra_codigo_turma}{numero_codigo_turma}" 
 
 print(cadastro_de_turmas())
+
+# filtragem de professores por disciplina
+def filtrar_professores_por_disciplina(disciplina):
+    professores_encontrados = []
+    
+    for professor in professores_cadastrados:
+        #acessa a chave disciplina no dicionário
+        if professor["Disciplina"].lower() == disciplina.lower():
+            professores_encontrados.append(professor)
+    
+    return professores_encontrados
+    
