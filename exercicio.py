@@ -79,10 +79,16 @@ def cadastro_de_disciplinas():
     disciplina = {
         "Disciplina": nome_da_disciplina, 
         "Carga horária": carga_horaria,
-        "Discente": professor_da_disciplina
+        "Discente": professor_da_disciplina,
+        "Código": gerar_codigo_disciplina()
     }
     
     disciplinas_cadastradas.append(disciplina)
     return disciplinas_cadastradas
+
+def gerar_codigo_disciplina():
+    numero_codigo_disciplina = ''.join(random.choices(string.digits, k = 4))
+    letra_codigo_disciplina = random.choice(string.ascii_uppercase)
+    return f"{letra_codigo_disciplina}{numero_codigo_disciplina}" 
 
 print(cadastro_de_disciplinas())
