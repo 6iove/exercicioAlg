@@ -153,8 +153,10 @@ def filtrar_professores_por_disciplina(disciplina):
         if professor["Disciplina"].lower() == disciplina.lower():
             professores_encontrados.append(professor)
     
-    return professores_encontrados
-    
+    if professores_encontrados: 
+        print(f"Professor: {professor['Nome']}, Matrícula: {professor['Matrícula']}, Disciplina: {professor['Disciplina']}")
+    else:
+        print(f"Nenhum professor foi cadastrado para a disciplina {disciplina}.")
     
 #página inicial
 def pagina_inicial(): 
@@ -167,7 +169,8 @@ def pagina_inicial():
         print("2. Professores")
         print("3. Disciplinas")
         print("4. Turmas")
-        print("5. Sair")
+        print("5. Opções de filtragem")
+        print("6. Sair")
 
         opcao_cadastro = input("Escolha uma opção: ")
 
@@ -180,6 +183,17 @@ def pagina_inicial():
         elif opcao_cadastro == "4": 
             cadastro_de_turmas()
         elif opcao_cadastro == "5":
+            print("1. Filtragem de professores por disciplina")
+            opcao_filtragem = input("Confirma? s/n: ")
+            if opcao_filtragem == "s":
+                disciplina = input("Digite a disciplina para a filtragem de professores: ")
+                filtrar_professores_por_disciplina(disciplina)
+            elif opcao_filtragem == "n":
+                print("Fechando programa.")
+                break
+            else:
+                print("Opção inválida.")
+        elif opcao_cadastro == "6":
             print("Fechando programa.")
             break
         else:
