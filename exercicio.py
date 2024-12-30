@@ -36,8 +36,7 @@ def gerar_numero_de_matricula():
     numero_matricula = ''.join(random.choices(string.digits, k = 6))
     letra_matricula = random.choice(string.ascii_uppercase)
     return f"{numero_matricula}-{letra_matricula}"
-  
-print(cadastro_de_alunos()) 
+   
 
 professores_cadastrados = []
 
@@ -78,7 +77,6 @@ def gerar_matricula_do_professor():
     letra_matricula_professor = random.choice(string.ascii_uppercase)
     return f"{numero_matricula_professor}.{letra_matricula_professor}"
 
-print(cadastro_de_professores())
 
 disciplinas_cadastradas = []
 
@@ -111,7 +109,6 @@ def gerar_codigo_disciplina():
     letra_codigo_disciplina = random.choice(string.ascii_uppercase)
     return f"{letra_codigo_disciplina}{numero_codigo_disciplina}" 
 
-print(cadastro_de_disciplinas())
 
 turmas_cadastradas = []
 
@@ -146,7 +143,6 @@ def gerar_código_turma():
     letra_codigo_turma = random.choice(string.ascii_uppercase)
     return f"{letra_codigo_turma}{numero_codigo_turma}" 
 
-print(cadastro_de_turmas())
 
 # filtragem de professores por disciplina
 def filtrar_professores_por_disciplina(disciplina):
@@ -159,3 +155,34 @@ def filtrar_professores_por_disciplina(disciplina):
     
     return professores_encontrados
     
+    
+#página inicial
+def pagina_inicial(): 
+    while True:   
+        print ("*** HOMEPAGE ***")
+
+        print("\n*** OPÇÕES DE CADASTROS ***")
+
+        print("1. Alunos")
+        print("2. Professores")
+        print("3. Disciplinas")
+        print("4. Turmas")
+        print("5. Sair")
+
+        opcao_cadastro = input("Escolha uma opção: ")
+
+        if opcao_cadastro == "1":
+            cadastro_de_alunos()
+        elif opcao_cadastro == "2":
+            cadastro_de_professores()  
+        elif opcao_cadastro == "3":
+            cadastro_de_disciplinas()
+        elif opcao_cadastro == "4": 
+            cadastro_de_turmas()
+        elif opcao_cadastro == "5":
+            print("Fechando programa.")
+            break
+        else:
+            print("Opção inválida. Digite 1, 2, 3, 4, ou 5.")
+            
+pagina_inicial()
