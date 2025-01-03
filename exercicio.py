@@ -176,7 +176,7 @@ def cadastro_de_disciplinas():
         }
     
         disciplinas_cadastradas.append(disciplina)
-        print(f"Disciplina{nome_da_disciplina} cadastrada com sucesso!")
+        print(f"Disciplina {nome_da_disciplina} cadastrada com sucesso!")
         
         cadastrar_outra_disciplina = input("Deseja cadastrar outra disciplina? (s/n): ")
         if cadastrar_outra_disciplina.lower() != "s":
@@ -189,7 +189,37 @@ def gerar_codigo_disciplina():
     letra_codigo_disciplina = random.choice(string.ascii_uppercase)
     return f"{letra_codigo_disciplina}{numero_codigo_disciplina}" 
 
-
+def alocar_disciplina_em_turmas():
+    print("\n*** ALOCAR PROFESSOR EM DISCIPLINA ***")
+   
+    nome_disciplina = input("Digite o nome da disciplina: ")
+    disciplina_encontrada = None # cria variável vazia
+   
+    for disciplina in disciplinas_cadastradas:
+        if disciplina['Disciplina'].lower() == nome_disciplina.lower():
+            disciplina_encontrada = disciplina
+            break
+       
+    if not disciplina_encontrada:
+        print("\nNenhuma disciplina encontrada com esse nome. Tente novamente.")
+        return
+   
+    nome_turma = input("Digite o nome da turma: ")
+    turma_encontrada = None
+   
+    for turma in turmas_cadastradas:
+        if turma['Nome da turma'].lower() == nome_turma.lower():
+            turma_encontrada = turma
+            break
+    if not turma_encontrada:
+        print("\nNenhuma turma encontrada com esse nome. Tente novamente.")
+        return
+   
+    if nome_disciplina not in turma_encontrada['Disciplinas']:
+        turma_encontrada['Disciplinas'].append(nome_disciplina)
+        print(f"\nA disciplina {nome_disciplina} foi alocada com sucesso a turma {nome_turma}.")
+    else:
+        print(f"\nA disciplina {nome_disciplina} já está alocada na turma {nome_turma}.")
 
 turmas_cadastradas = []
 
@@ -239,6 +269,7 @@ def pagina_inicial():
         print("5. Opções de filtragem")
         print("6. Matrícula de alunos em turmas")
         print("7. Alocar professor em disciplina")
+        print("8. Alocar disciplina em turmas")
         print("Sair")
 
         opcao_cadastro = input("Escolha uma opção (1-6): ")
@@ -266,6 +297,8 @@ def pagina_inicial():
             matricular_aluno_em_turma()
         elif opcao_cadastro == "7":
             alocar_professor_em_disciplina()
+        elif opcao_cadastro == "8":
+            alocar_disciplina_em_turmas()
         else:
             print("Opção inválida. Digite 1, 2, 3, 4, ou 5.")
             
