@@ -256,13 +256,15 @@ def consultar_alunos_em_turmas():
         if turma['Nome da turma'].lower() == nome_turma.lower():
             turma_encontrada = turma
             break
-    
-    if turma_encontrada['Alunos']:
-        print(f"\nAlunos matrículados na turma {nome_turma}: ")
-        for aluno in turma_encontrada['Alunos']:
-                print(f"{aluno['Nome']}, Matrícula: {aluno['Matrícula']}")
-    else:
-        print(f"\nNão há alunos matriculados na turma {nome_turma} ainda.")
+    if turma_encontrada:
+        if turma_encontrada['Alunos']:
+            print(f"\nAlunos matrículados na turma {nome_turma}: ")
+            for aluno in turma_encontrada['Alunos']:
+                    print(f"{aluno['Nome']}, Matrícula: {aluno['Matrícula']}")
+        else:
+            print(f"\nNão há alunos matriculados na turma {nome_turma} ainda.")
+    else: 
+        print(f"\nNenhuma turma encontrada com o nome {nome_turma}.")
     
 def consultar_professores_em_disciplina():
     print("\n*** CONSULTAR PROFESSORES EM DISCIPLINAS ***")
@@ -284,6 +286,27 @@ def consultar_professores_em_disciplina():
             print(f"\nNão há professores alocados na disciplina {nome_disciplina} ainda.")
     else:
         print(f"\nNenhuma disciplina encontrada com o nome {nome_disciplina}.")
+        
+def consultar_disciplinas_em_turmas():
+    print("\n*** CONSULTAR DISCIPLINAS EM TURMAS ***")
+    
+    nome_turma = input("Digite o nome da turma que deseja consultar: ")
+    turma_encontrada = None
+    
+    for turma in turmas_cadastradas:
+        if turma['Nome da turma'].lower() == nome_turma.lower():
+            turma_encontrada = turma
+            break
+        
+    if turma_encontrada:
+        if turma_encontrada['Disciplinas']:
+            print(f"\nDisciplinas alocadas na turma {nome_turma}: ")
+            for disciplina in turma_encontrada['Disciplinas']:
+                print(f"\n{turma_encontrada['Disciplinas']}")
+        else:
+            print(f"\nNão há disciplinas alocadas na turma {nome_turma} ainda.")
+    else:
+        print(f"\nNenhuma turma encontrada com o nome{nome_turma}.")
         
 # ---- filtragem de professores por disciplina
 def filtrar_professores_por_disciplina(disciplina):
@@ -350,11 +373,14 @@ def pagina_inicial():
         elif opcao_cadastro == "8":
             print("1. Consulta de alunos matriculados em turmas")
             print("2. Consulta de professores alocados em disciplinas")
+            print("3. Consultar disciplinas alocadas em turmas")
             opcao_consulta = input("Escolha uma opção de consulta (1-3): ")
             if opcao_consulta == "1":
                 consultar_alunos_em_turmas()
             elif opcao_consulta == "2":
                 consultar_professores_em_disciplina()
+            elif opcao_consulta == "3":
+                consultar_disciplinas_em_turmas()
         else:
             print("Opção inválida. Digite 1, 2, 3, 4, ou 5.")
             
