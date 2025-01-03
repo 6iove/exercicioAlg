@@ -260,16 +260,15 @@ def pagina_inicial():
     while True:   
         print ("\n*** HOMEPAGE ***")
 
-        print("\n*** OPÇÕES DE CADASTROS ***")
+        print("\n*** OPÇÕES DE MENU ***")
 
-        print("1. Alunos")
-        print("2. Professores")
-        print("3. Disciplinas")
-        print("4. Turmas")
+        print("1. Cadastrar alunos")
+        print("2. Cadastrar professores")
+        print("3. Cadastrar disciplinas")
+        print("4. Cadastrar turmas")
         print("5. Opções de filtragem")
         print("6. Matrícula de alunos em turmas")
-        print("7. Alocar professor em disciplina")
-        print("8. Alocar disciplina em turmas")
+        print("7. Opções de alocação")
         print("Sair")
 
         opcao_cadastro = input("Escolha uma opção (1-6): ")
@@ -296,9 +295,13 @@ def pagina_inicial():
         elif opcao_cadastro == "6":
             matricular_aluno_em_turma()
         elif opcao_cadastro == "7":
-            alocar_professor_em_disciplina()
-        elif opcao_cadastro == "8":
-            alocar_disciplina_em_turmas()
+            print("1. Alocação de professores em disciplia")
+            print("2. Alocação de disciplinas em turmas")
+            opcao_alocacao = input("Escolha uma opção de alocação (1-2): ")
+            if opcao_alocacao == "1":
+                alocar_professor_em_disciplina()
+            if opcao_alocacao == "2":
+                alocar_disciplina_em_turmas()
         else:
             print("Opção inválida. Digite 1, 2, 3, 4, ou 5.")
             
