@@ -10,7 +10,7 @@ def cadastro_de_alunos():
         print("*** CADASTRAR ALUNO ***")
     
         nome = validar_nome()
-        data_de_nascimento = input("Data de nascimento: ")
+        data_de_nascimento = validar_data_de_nascimento()
         genero = validar_genero()
         print("Endereço -")
         endereco_rua = input("Rua: ")
@@ -22,8 +22,7 @@ def cadastro_de_alunos():
             "Nome": nome, 
             "Data de nascimento": data_de_nascimento, 
             "Gênero": genero, 
-            "Endereço - Rua": endereco_rua, 
-            "Endereçi - Número": endereco_numero,
+            "Endereço": endereco_rua and endereco_numero,
             "Telefone": telefone, 
             "E-mail": email,
             "Matrícula": gerar_numero_de_matricula() 
@@ -47,9 +46,11 @@ def cadastro_de_professores():
         print("*** CADASTRAR PROFESSOR ***")
     
         nome = validar_nome()
-        data_de_nascimento = input("Data de nascimento: ")
+        data_de_nascimento = validar_data_de_nascimento()
         genero = validar_genero()
-        endereco = input("Endereço completo: ")
+        print("Endereço -")
+        endereco_rua = input("Rua: ")
+        endereco_numero = int(input("Número: "))
         telefone = validar_telefone()
         email = validar_email()
         disciplina_inicial = input("Disciplina inicial que será lecionada pelo professor: ")
@@ -58,7 +59,7 @@ def cadastro_de_professores():
             "Nome": nome, 
             "Data de nascimento": data_de_nascimento, 
             "Gênero": genero, 
-            "Endereço": endereco, 
+            "Endereço": endereco_rua and endereco_numero, 
             "Telefone": telefone, 
             "E-mail": email, 
             "Disciplinas": [disciplina_inicial], 
@@ -132,25 +133,30 @@ def cadastro_de_turmas():
     return turmas_cadastradas
 
 # --- CAMPO DE VERIFICAÇÃO
+def validar_input(input, digitos):
+    return input.isdigit() and len(input) == digitos
+
 def validar_nome():
     while True:
         nome = input("Nome completo: ")
         
-        palavra = nome.split()
+        palavra = nome.split( )
         
         if len(palavra) < 2:
             print("Certifique-se de inserir primeiro nome e sobrenome.")
         else:
             return nome
-
-def validar_email():
-    while True:
-        email = input("E-mail: ")
         
-        if "@" and "." in email:
-            return email
+def validar_data_de_nascimento():
+    while True:
+        data_de_nascimento = input("Data de nascimento (DDMMAAAA): ")
+        
+        data = data_de_nascimento.strip( )
+        
+        if validar_input(data_de_nascimento, 8):
+            return data
         else:
-            print("\nO E-mail informado é inválido.")
+            print("\nA data de nascimento informada é inválida. Certifique-se de informar dia, mês e ano, respectivamente.")
             
 def validar_genero():
     while True:
@@ -163,24 +169,27 @@ def validar_genero():
         else:
             print("\nO gênero informado é inválido. Certifique-se de digitar 'f' para feminino ou 'm' para masculino.")
             
-def validar_input(input, digitos):
-    return input.isdigit() and len(input) == digitos
-
 def validar_telefone():
     while True:
         telefone = input("Telefone (móvel): ")
         
-        numero = telefone.strip()
+        numero = telefone.strip( )
         
         if validar_input(telefone, 11):
             return numero 
         else:
             print("\nO número de telefone informado é inválido. Certifique-se de que informou o ddd.") 
-        
 
+def validar_email():
+    while True:
+        email = input("E-mail: ")
         
+        if "@" and "." in email:
+            return email
+        else:
+            print("\nO E-mail informado é inválido.")
+
 # --- FUNÇÕES DE GERAR CÓDIGOS
-
 def gerar_numero_de_matricula():
     numero_matricula = ''.join(random.choices(string.digits, k = 6))
     letra_matricula = random.choice(string.ascii_uppercase)
@@ -202,7 +211,6 @@ def gerar_código_turma():
     return f"{letra_codigo_turma}{numero_codigo_turma}"
 
 # --- FUNÇÕES DE ALOCAÇÃO
-
 def matricular_aluno_em_turma():
     print("\n*** MATRICULAR ALUNO EM TURMA ***")
     
@@ -296,7 +304,6 @@ def alocar_disciplina_em_turmas():
         print(f"\nA disciplina {nome_disciplina} já está alocada na turma {nome_turma}.")
           
 # --- CONSULTAS
-
 def consultar_alunos_em_turmas():
     print("\n*** CONSULTAR ALUNOS EM TURMAS ***")
     
