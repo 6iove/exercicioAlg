@@ -2,24 +2,24 @@ import random
 import string
 
 
-# --- CADASTROS
+# --- FUNÇÕES DE CADASTROS
 alunos_cadastrados = []
 
 def cadastro_de_alunos():
     while True: 
         print("*** CADASTRAR ALUNO ***")
     
-        nome = input("Nome do aluno: ")
+        nome = validar_nome()
         data_de_nascimento = input("Data de nascimento: ")
-        genero_sexual = input("Gênero sexual: ")
+        genero = validar_genero()
         endereco = input("Endereço completo: ")
-        telefone = input("Número de telefone: ")
-        email = input("E-mail: ")
+        telefone = validar_telefone()
+        email = validar_email()
     
         aluno = {
             "Nome": nome, 
             "Data de nascimento": data_de_nascimento, 
-            "Gênero sexual": genero_sexual, 
+            "Gênero": genero, 
             "Endereço": endereco, 
             "Telefone": telefone, 
             "E-mail": email,
@@ -43,18 +43,18 @@ def cadastro_de_professores():
         
         print("*** CADASTRAR PROFESSOR ***")
     
-        nome = input("Nome completo: ")
+        nome = validar_nome()
         data_de_nascimento = input("Data de nascimento: ")
-        genero_sexual = input("Gênero sexuaL: ")
+        genero = validar_genero()
         endereco = input("Endereço completo: ")
-        telefone = input("Número de telefone: ")
-        email = input("E-mail: ")
+        telefone = validar_telefone()
+        email = validar_email()
         disciplina_inicial = input("Disciplina inicial que será lecionada pelo professor: ")
     
         professor = {
             "Nome": nome, 
             "Data de nascimento": data_de_nascimento, 
-            "Gênero sexual": genero_sexual, 
+            "Gênero": genero, 
             "Endereço": endereco, 
             "Telefone": telefone, 
             "E-mail": email, 
@@ -128,7 +128,53 @@ def cadastro_de_turmas():
         
     return turmas_cadastradas
 
-# --- GERAR CÓDIGOS
+# --- CAMPO DE VERIFICAÇÃO
+def validar_nome():
+    while True:
+        nome = input("Nome completo: ")
+        
+        palavra = nome.split()
+        
+        if len(palavra) < 2:
+            print("Certifique-se de inserir primeiro nome e sobrenome.")
+        else:
+            return nome
+
+def validar_email():
+    while True:
+        email = input("E-mail: ")
+        
+        if "@" and "." in email:
+            return email
+        else:
+            print("\nO E-mail informado é inválido.")
+            
+def validar_genero():
+    while True:
+        genero = input("Gênero (F/M): ").lower()
+        
+        validos = ['m', 'f']
+        
+        if genero in validos:
+            return genero
+        else:
+            print("\nO gênero informado é inválido. Certifique-se de digitar 'f' para feminino ou 'm' para masculino.")
+
+def validar_telefone():
+    while True:
+        telefone = input("Telefone (móvel): ")
+        
+        numero = telefone.strip()
+        
+        if len(numero) < 11:
+            print("\nO numero de telefone informado é invalido. Certifique-se de informar o ddd.")
+        elif len(numero) > 11:
+            print("\nO número de telefone informado é inválido. Certifique-se de não inserir o número 0 antes do ddd.")
+        elif len(numero) == 11:
+            return telefone
+                
+
+# --- FUNÇÕES DE GERAR CÓDIGOS
 
 def gerar_numero_de_matricula():
     numero_matricula = ''.join(random.choices(string.digits, k = 6))
@@ -150,7 +196,7 @@ def gerar_código_turma():
     letra_codigo_turma = random.choice(string.ascii_uppercase)
     return f"{letra_codigo_turma}{numero_codigo_turma}"
 
-# --- ALOCAÇÕES
+# --- FUNÇÕES DE ALOCAÇÃO
 
 def matricular_aluno_em_turma():
     print("\n*** MATRICULAR ALUNO EM TURMA ***")
@@ -337,19 +383,19 @@ def pagina_inicial():
         print("6. Matrícula de alunos em turmas")
         print("7. Opções de alocação")
         print("8. Opções de consulta")
-        print("Sair")
+        print("9. Sair")
 
-        opcao_cadastro = input("Escolha uma opção (1-6): ")
+        opcao_menu = input("Escolha uma opção (1-9): ")
 
-        if opcao_cadastro == "1":
+        if opcao_menu == "1":
             cadastro_de_alunos()
-        elif opcao_cadastro == "2":
+        elif opcao_menu == "2":
             cadastro_de_professores()  
-        elif opcao_cadastro == "3":
+        elif opcao_menu == "3":
             cadastro_de_disciplinas()
-        elif opcao_cadastro == "4": 
+        elif opcao_menu == "4": 
             cadastro_de_turmas()
-        elif opcao_cadastro == "5":
+        elif opcao_menu == "5":
             print("1. Filtragem de professores por disciplina")
             opcao_filtragem = input("Confirma? s/n: ")
             if opcao_filtragem == "s":
@@ -360,9 +406,9 @@ def pagina_inicial():
                 break
             else:
                 print("Opção inválida.")
-        elif opcao_cadastro == "6":
+        elif opcao_menu == "6":
             matricular_aluno_em_turma()
-        elif opcao_cadastro == "7":
+        elif opcao_menu == "7":
             print("1. Alocação de professores em disciplia")
             print("2. Alocação de disciplinas em turmas")
             opcao_alocacao = input("Escolha uma opção de alocação (1-2): ")
@@ -370,7 +416,7 @@ def pagina_inicial():
                 alocar_professor_em_disciplina()
             if opcao_alocacao == "2":
                 alocar_disciplina_em_turmas()
-        elif opcao_cadastro == "8":
+        elif opcao_menu == "8":
             print("1. Consulta de alunos matriculados em turmas")
             print("2. Consulta de professores alocados em disciplinas")
             print("3. Consultar disciplinas alocadas em turmas")
@@ -381,7 +427,10 @@ def pagina_inicial():
                 consultar_professores_em_disciplina()
             elif opcao_consulta == "3":
                 consultar_disciplinas_em_turmas()
+        elif opcao_menu == "9":
+            print("Fechando o sistema.")
+            break
         else:
-            print("Opção inválida. Digite 1, 2, 3, 4, ou 5.")
+            print("Opção inválida. Digite 1, 2, 3, 4, 5, 6, 7, 8 ou 9.")
             
 pagina_inicial()
