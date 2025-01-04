@@ -12,7 +12,9 @@ def cadastro_de_alunos():
         nome = validar_nome()
         data_de_nascimento = input("Data de nascimento: ")
         genero = validar_genero()
-        endereco = input("Endereço completo: ")
+        print("Endereço -")
+        endereco_rua = input("Rua: ")
+        endereco_numero = int(input("Número: "))
         telefone = validar_telefone()
         email = validar_email()
     
@@ -20,7 +22,8 @@ def cadastro_de_alunos():
             "Nome": nome, 
             "Data de nascimento": data_de_nascimento, 
             "Gênero": genero, 
-            "Endereço": endereco, 
+            "Endereço - Rua": endereco_rua, 
+            "Endereçi - Número": endereco_numero,
             "Telefone": telefone, 
             "E-mail": email,
             "Matrícula": gerar_numero_de_matricula() 
@@ -159,6 +162,9 @@ def validar_genero():
             return genero
         else:
             print("\nO gênero informado é inválido. Certifique-se de digitar 'f' para feminino ou 'm' para masculino.")
+            
+def validar_input(input, digitos):
+    return input.isdigit() and len(input) == digitos
 
 def validar_telefone():
     while True:
@@ -166,14 +172,13 @@ def validar_telefone():
         
         numero = telefone.strip()
         
-        if len(numero) < 11:
-            print("\nO numero de telefone informado é invalido. Certifique-se de informar o ddd.")
-        elif len(numero) > 11:
-            print("\nO número de telefone informado é inválido. Certifique-se de não inserir o número 0 antes do ddd.")
-        elif len(numero) == 11:
-            return telefone
-                
+        if validar_input(telefone, 11):
+            return numero 
+        else:
+            print("\nO número de telefone informado é inválido. Certifique-se de que informou o ddd.") 
+        
 
+        
 # --- FUNÇÕES DE GERAR CÓDIGOS
 
 def gerar_numero_de_matricula():
