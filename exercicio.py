@@ -8,16 +8,18 @@ alunos_cadastrados = []
 def cadastro_de_alunos():
     while True: 
         print("*** CADASTRAR ALUNO ***")
-    
+        
+    #recolhimento de dados
         nome = validar_nome()
         data_de_nascimento = validar_data_de_nascimento()
         genero = validar_genero()
         print("Endereço -")
         endereco_rua = input("Rua: ")
-        endereco_numero = int(input("Número: "))
+        endereco_numero = input("Número: ")
         telefone = validar_telefone()
         email = validar_email()
     
+    #dicionário
         aluno = {
             "Nome": nome, 
             "Data de nascimento": data_de_nascimento, 
@@ -28,14 +30,18 @@ def cadastro_de_alunos():
             "Matrícula": gerar_numero_de_matricula() 
         }
     
+    #inclusão do dicionário na lista
         alunos_cadastrados.append(aluno)
+        #imprime informações necessárias para o uso de outras funções do sistema
         print(f"\nAluno {nome} cadastrado!")
         print (f"\n{nome}, {aluno['Matrícula']}")
         
+        #opção de cadastrar mais alunos, que estarão alocados no mesmo dicionário, na mesma lista
         cadastrar_outro_aluno = input("Deseja cadastrar outro aluno? (s/n): ")
         if cadastrar_outro_aluno.lower() != "s": 
             break
-        
+    
+    #retorna a lista, agora com o dicionário
     return alunos_cadastrados
     
 professores_cadastrados = []
@@ -50,7 +56,7 @@ def cadastro_de_professores():
         genero = validar_genero()
         print("Endereço -")
         endereco_rua = input("Rua: ")
-        endereco_numero = int(input("Número: "))
+        endereco_numero = input("Número: ")
         telefone = validar_telefone()
         email = validar_email()
         disciplina_inicial = input("Disciplina inicial que será lecionada pelo professor: ")
@@ -133,6 +139,8 @@ def cadastro_de_turmas():
     return turmas_cadastradas
 
 # --- CAMPO DE VERIFICAÇÃO
+
+#função para validar entradas que devem ser números. o uso do int ou float não permite o uso de len.
 def validar_input(input, digitos):
     return input.isdigit() and len(input) == digitos
 
@@ -140,28 +148,33 @@ def validar_nome():
     while True:
         nome = input("Nome completo: ")
         
-        palavra = nome.split( )
-        
-        if len(palavra) < 2:
+        # o uso do len mais o split irá verificar se existem ao menos duas 'palavras' no nome, para ser considerado completo
+        if len(nome.split()) < 2:
             print("Certifique-se de inserir primeiro nome e sobrenome.")
         else:
+            # return é a condição de parada do loop while
             return nome
         
 def validar_data_de_nascimento():
     while True:
         data_de_nascimento = input("Data de nascimento (DDMMAAAA): ")
         
-        data = data_de_nascimento.strip( )
+        # o replace irá substituir espaços por nenhum espaço, ou seja, quaisquer espaços que possam ser adicionados pelo usuário serão ignorados
+        data = data_de_nascimento.replace(" ", "")
         
-        if validar_input(data_de_nascimento, 8):
+        # são colocadas duas condições para validar a entrada, data, que é a data_de_nascimento sem espaços adicionais e 8, a quantidade máxima (e aqui obrigatória) de números numa data
+        if validar_input(data, 8):
+        # condição de parada
             return data
         else:
             print("\nA data de nascimento informada é inválida. Certifique-se de informar dia, mês e ano, respectivamente.")
             
 def validar_genero():
     while True:
+        # lower irá transformar as letras em minuscula, caso o usuário a insira como maiúscula 
         genero = input("Gênero (F/M): ").lower()
         
+        # uma lista atribuída a validos, que será usada no if, para que apenas o que esta na lista seja aceito
         validos = ['m', 'f']
         
         if genero in validos:
@@ -173,9 +186,9 @@ def validar_telefone():
     while True:
         telefone = input("Telefone (móvel): ")
         
-        numero = telefone.strip( )
+        numero = telefone.replace(" ", "")
         
-        if validar_input(telefone, 11):
+        if validar_input(numero, 11):
             return numero 
         else:
             print("\nO número de telefone informado é inválido. Certifique-se de que informou o ddd.") 
@@ -184,12 +197,20 @@ def validar_email():
     while True:
         email = input("E-mail: ")
         
+        # elementos obrigatórios para a consideração de um email
         if "@" and "." in email:
             return email
         else:
             print("\nO E-mail informado é inválido.")
 
 # --- FUNÇÕES DE GERAR CÓDIGOS
+
+# ''.join(random.choice(string.digits, k = 6)), --> randomicamente escolhe 6 digitos (definido pelo k) que serão retirados da biblioteca string.digits (0 - 9); .join irá pegar os 6 digitos e adicionar a uma string, o '' é onde deveria estar o separador, que esta vazio. 
+
+# random.choice(string.ascii_uppercase) --> randomicamente escolhe uma letra do alfabeto da biblioteca string. Na biblioteca string 'ascii_uppercase' possui letras de A-Z maiúsculas.
+
+# o return de cada função irá retornar o numero de matricula o código num padrão definido (123456-A)/(12345.A)...
+
 def gerar_numero_de_matricula():
     numero_matricula = ''.join(random.choices(string.digits, k = 6))
     letra_matricula = random.choice(string.ascii_uppercase)
@@ -214,28 +235,36 @@ def gerar_código_turma():
 def matricular_aluno_em_turma():
     print("\n*** MATRICULAR ALUNO EM TURMA ***")
     
-    matricula_do_aluno = input("Digite a matrícula do aluno: ").strip() # mais de um aluno pode ter o mesmo nome completo
+    matricula_do_aluno = input("Digite a matrícula do aluno: ")  # mais de um aluno pode ter o mesmo nome completo
     aluno_encontrado = None # cria variável vazia
     
-    # percorre array alunos_cadastrados 
+    # percorre array alunos_cadastrados (percorre por cada aluno alocado no array)
     for aluno in alunos_cadastrados:
     # procura o aluno a partir do número de matrícula armazenado percorrendo o dicionário 'aluno'
         if aluno["Matrícula"] == matricula_do_aluno:
         # variável, antes vazia, recebe as informações do aluno contidas no dicionário
             aluno_encontrado = aluno
+            # termina loop for
             break
         
+    # quando aluno_encontrado não for mais variável vazia
     if aluno_encontrado:
         print(f"Aluno: {aluno_encontrado['Nome']}")
-        nome_da_turma = input("Em qual turma o aluno será matrículado? ").strip()
+        nome_da_turma = input("Em qual turma o aluno será matrículado? ") 
+        # variável vazia
         turma_encontrada = None
         
+        # percorre array turmas_cadastradas 
         for turma in turmas_cadastradas:
+            # verifica se o nome da turma está no dicionário
             if turma["Nome da turma"].lower() == nome_da_turma.lower():
+            #variável, antes vazia, recebe informações de turma encontradas no dicionário
                 turma_encontrada = turma
                 break
         
-        if turma_encontrada:
+        # quando variável vazia recebe valor
+        if turma_encontrada: 
+            # a lista aluno_encontrado está sendo adicionada à lista turma_encontrada, na chave 'Alunos', ou seja, o aluno encontrado esta sendo registrado na turma
             turma_encontrada["Alunos"].append(aluno_encontrado)
             print(f"\nO aluno {aluno_encontrado['Nome']} foi matriculado com sucesso na turma {nome_da_turma}.")
         else:
@@ -246,7 +275,7 @@ def matricular_aluno_em_turma():
 def alocar_professor_em_disciplina():
     print("\n*** ALOCAR PROFESSOR EM DISCIPLINA ***")
     
-    matricula_do_professor = input("Digite a matrícula do professor: ").strip() # mais de um professor pode ter o mesmo nome completo
+    matricula_do_professor = input("Digite a matrícula do professor: ")  # mais de um professor pode ter o mesmo nome completo
     professor_encontrado = None # cria variável vazia
     
     # percorre array professores_cadastrados 
@@ -257,13 +286,14 @@ def alocar_professor_em_disciplina():
             professor_encontrado = professor
             break
         
-    if not professor_encontrado:
+    if professor_encontrado:
+        print(f"Professor registrado: {professor_encontrado['Nome']}")
+        
+    else:
         print("\nNenhum professor registrado com essa matrícula. Tente novamente.")
         return
     
-    print(f"Professor registrado: {professor_encontrado['Nome']}")
-    
-    nome_nova_disciplina = input("Digite o nome da disciplina em que o professor será alocado: ").strip()
+    nome_nova_disciplina = input("Digite o nome da disciplina em que o professor será alocado: ") 
 
     if nome_nova_disciplina not in professor_encontrado['Disciplinas']:
         professor_encontrado['Disciplinas'].append(nome_nova_disciplina)
@@ -274,7 +304,7 @@ def alocar_professor_em_disciplina():
 def alocar_disciplina_em_turmas():
     print("\n*** ALOCAR PROFESSOR EM DISCIPLINA ***")
    
-    nome_disciplina = input("Digite o nome da disciplina: ").strip()
+    nome_disciplina = input("Digite o nome da disciplina: ") 
     disciplina_encontrada = None # cria variável vazia
    
     for disciplina in disciplinas_cadastradas:
@@ -286,7 +316,7 @@ def alocar_disciplina_em_turmas():
         print("\nNenhuma disciplina encontrada com esse nome. Tente novamente.")
         return
    
-    nome_turma = input("Digite o nome da turma: ").strip()
+    nome_turma = input("Digite o nome da turma: ") 
     turma_encontrada = None
    
     for turma in turmas_cadastradas:
@@ -307,15 +337,19 @@ def alocar_disciplina_em_turmas():
 def consultar_alunos_em_turmas():
     print("\n*** CONSULTAR ALUNOS EM TURMAS ***")
     
-    nome_turma = input("Digite o nome da turma que deseja consultar: ").strip()
+    nome_turma = input("Digite o nome da turma que deseja consultar: ") 
     turma_encontrada = None
     
+    # percorre o array
     for turma in turmas_cadastradas:
+        # se o nome dado no input corresponde à chave no dicionário turma_encontrada receberá a lista turma
         if turma['Nome da turma'].lower() == nome_turma.lower():
             turma_encontrada = turma
             break
     if turma_encontrada:
+        # no dicionário consultará a chave alunos, onde foram alocados os alunos matriculados na turma
         if turma_encontrada['Alunos']:
+            # mostrará os alunos e numero de matricula
             print(f"\nAlunos matrículados na turma {nome_turma}: ")
             for aluno in turma_encontrada['Alunos']:
                     print(f"{aluno['Nome']}, Matrícula: {aluno['Matrícula']}")
@@ -327,7 +361,7 @@ def consultar_alunos_em_turmas():
 def consultar_professores_em_disciplina():
     print("\n*** CONSULTAR PROFESSORES EM DISCIPLINAS ***")
     
-    nome_disciplina = input("Digite o nome da disciplina que deseja consultar: ").strip()
+    nome_disciplina = input("Digite o nome da disciplina que deseja consultar: ") 
     disciplina_encontrada = None
     
     for disciplina in disciplinas_cadastradas:
