@@ -455,7 +455,7 @@ def pagina_inicial():
         elif opcao_menu == "6":
             matricular_aluno_em_turma()
         elif opcao_menu == "7":
-            print("1. Alocação de professores em disciplia")
+            print("1. Alocação de professores em disciplina")
             print("2. Alocação de disciplinas em turmas")
             opcao_alocacao = input("Escolha uma opção de alocação (1-2): ")
             if opcao_alocacao == "1":
